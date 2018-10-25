@@ -20,7 +20,7 @@ class StablePose(object):
         3x3 rotation matrix that rotates the mesh into the stable pose from
         standardized coordinates.
     x0 : :obj:`numpy.ndarray` of float
-        3D point in the mesh that is resting on the table.
+        Translation from the object frame to world frame
     face : :obj:`numpy.ndarray`
         3D vector of indices corresponding to vertices forming the resting face
     stp_id : :obj:`str`
@@ -78,9 +78,8 @@ class StablePose(object):
 
     @property
     def T_obj_world(self):
-        T_world_obj = RigidTransform(rotation=self.r.T,
+        T_obj_world = RigidTransform(rotation=self.r,
                                      translation=self.x0,
-                                     from_frame='world',
-                                     to_frame='obj')
-        return T_world_obj.inverse()
-    
+                                     from_frame='obj',
+                                     to_frame='world')
+        return T_obj_world
